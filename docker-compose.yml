@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    ports:
+      - 5678:5678
+    restart: always
+    environment:
+      POSTGRES_USER: mushroom-girl
+      POSTGRES_PASSWORD: mushr88ming
+      POSTGRES_DB: mushrooms
+      PGPORT: 5678
