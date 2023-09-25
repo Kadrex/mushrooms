@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {GeoJSON} from "../models/geoJSON";
 
 
 @Injectable({
@@ -15,7 +16,7 @@ export class MushroomsService {
   ) {
   }
 
-  public getMushroomPoints(): Observable<any> {
-    return this.http.get(this.baseUrl);
+  public getMushroomPoints(): Observable<GeoJSON[]> {
+    return this.http.get<GeoJSON[]>(this.baseUrl);
   }
 }

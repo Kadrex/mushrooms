@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 // @ts-ignore
 import * as L from 'leaflet';
 import {MushroomsService} from "./mushrooms.service";
@@ -8,7 +8,7 @@ import {MushroomsService} from "./mushrooms.service";
   templateUrl: './mushrooms-map.component.html',
   styleUrls: ['./mushrooms-map.component.css']
 })
-export class MushroomsMapComponent implements OnInit {
+export class MushroomsMapComponent implements OnInit, AfterViewInit {
 
   urlTemplate: string = 'https://tile.openstreetmap.org/level/tileX/tileY.png';
 
@@ -31,6 +31,16 @@ export class MushroomsMapComponent implements OnInit {
     });
 
     tiles.addTo(this.map);
+
+    var myLines = [{
+      "type": "LineString",
+      "coordinates": [[-100, 40], [-105, 45], [-110, 55]]
+    }, {
+      "type": "LineString",
+      "coordinates": [[-105, 40], [-110, 45], [-115, 55]]
+    }];
+
+    L.geoJSON(myLines);
   }
 
   constructor(
@@ -39,17 +49,30 @@ export class MushroomsMapComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.initMap();
+    this.initClickListeners();
   }
 
   ngOnInit() {
     this.getMushrooms();
   }
 
+  onMapClick(e:any) {
+    const popup = L.popup();
+    popup
+      .setLatLng(e.latlng)
+      .setContent("You clicked the map at " + e.latlng.toString())
+      .openOn(this.map);
+  }
+
+  private initClickListeners() {
+    this.map.on('click', this.onMapClick.bind(this));
+  }
+
   private getMushrooms() {
     this.service.getMushroomPoints().subscribe(mushrooms => {
       for (const mushroom of mushrooms) {
-        var marker = L.marker([mushroom.xcoordinates, mushroom.ycoordinates]).addTo(this.map);
-        marker.bindPopup("Here you can find " + mushroom.type);
+        const geoJSONPoint = L.geoJSON(mushroom).addTo(this.map);
+        geoJSONPoint.bindPopup("Here you can find " + mushroom.properties.name);
       }
     })
   }
