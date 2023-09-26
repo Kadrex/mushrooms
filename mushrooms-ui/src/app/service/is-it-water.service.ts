@@ -1,8 +1,8 @@
-import {Injectable} from "@angular/core";
-import {LatLng} from "../models/latLng";
-import {Observable} from "rxjs";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {ConfigurationService} from "../configuration/configuration.service";
+import { Injectable } from '@angular/core';
+import { LatLng } from '../models/latLng';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { ConfigurationService } from '../configuration/configuration.service';
 
 export interface IsItWater {
   water: boolean
@@ -14,6 +14,8 @@ export interface IsItWater {
 export class IsItWaterService {
 
   private baseUrl = this.configurationService.WATER_API_URL;
+  private apiKey = '3619120007msh4b93fef447094c8p15a9b0jsn85eb66c5a470';
+  private apiHost = 'isitwater-com.p.rapidapi.com';
 
   constructor(
     private http: HttpClient,
@@ -26,8 +28,8 @@ export class IsItWaterService {
       .set('latitude', latLng.lat)
       .set('longitude', latLng.lng);
     const headers = new HttpHeaders()
-      .set('X-RapidAPI-Key', '3619120007msh4b93fef447094c8p15a9b0jsn85eb66c5a470')
-      .set('X-RapidAPI-Host', 'isitwater-com.p.rapidapi.com');
+      .set('X-RapidAPI-Key', this.apiKey)
+      .set('X-RapidAPI-Host', this.apiHost);
     return this.http.get<IsItWater>(this.baseUrl, {params, headers});
   }
 }

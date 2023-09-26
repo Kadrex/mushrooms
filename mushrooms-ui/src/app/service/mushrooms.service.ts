@@ -1,10 +1,10 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {GeoJSON} from "../models/geoJSON";
-import {MushroomDialogResult} from "../models/mushroomDialogResult";
-import {LatLng} from "../models/latLng";
-import {ConfigurationService} from "../configuration/configuration.service";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { GeoJSON } from '../models/geoJSON';
+import { MushroomDialogResult } from '../models/mushroomDialogResult';
+import { LatLng } from '../models/latLng';
+import { ConfigurationService } from '../configuration/configuration.service';
 
 
 @Injectable({

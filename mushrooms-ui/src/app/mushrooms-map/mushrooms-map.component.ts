@@ -1,13 +1,13 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-// @ts-ignore
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import {MushroomsService} from "./mushrooms.service";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {AddMushroomPointDialogComponent} from "../add-mushroom-point-dialog/add-mushroom-point-dialog.component";
-import {LatLng} from "../models/latLng";
-import {MushroomDialogResult} from "../models/mushroomDialogResult";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {IsItWaterService} from "../service/is-it-water.service";
+import { MushroomsService } from '../service/mushrooms.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AddMushroomPointDialogComponent } from '../add-mushroom-point-dialog/add-mushroom-point-dialog.component';
+import { LatLng } from '../models/latLng';
+import { MushroomDialogResult } from '../models/mushroomDialogResult';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { IsItWaterService } from '../service/is-it-water.service';
+import { GeoJSON } from '../models/geoJSON';
 
 @Component({
   selector: 'app-mushrooms-map',
@@ -15,8 +15,6 @@ import {IsItWaterService} from "../service/is-it-water.service";
   styleUrls: ['./mushrooms-map.component.css']
 })
 export class MushroomsMapComponent implements OnInit, AfterViewInit {
-
-  urlTemplate: string = 'https://tile.openstreetmap.org/level/tileX/tileY.png';
 
   private map: any;
   private currentLatLng: LatLng;
@@ -26,9 +24,10 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
 
   private initMap(): void {
     this.map = L.map('map', {
-      center: [58.62, 24.76],
+      center: [58.62, 24.76], // Estonia
       zoom: 8
     });
+    // Borders of Estonia
     var southWest = L.latLng(59.949509, 21.588135),
       northEast = L.latLng(57.492214, 28.311768);
     var bounds = L.latLngBounds(southWest, northEast);
@@ -41,7 +40,6 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
     });
 
     tiles.addTo(this.map);
-
   }
 
   constructor(
@@ -51,13 +49,13 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar
   ) { }
 
+  ngOnInit() {
+    this.getMushrooms();
+  }
+
   ngAfterViewInit(): void {
     this.initMap();
     this.initClickListeners();
-  }
-
-  ngOnInit() {
-    this.getMushrooms();
   }
 
   async add() {
@@ -67,12 +65,11 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
     const result: MushroomDialogResult = await this.dialog.open(AddMushroomPointDialogComponent, dialogConf).afterClosed().toPromise();
     if (!result) return;
 
-    // @ts-ignore
     this.service.save(result, this.currentLatLng).subscribe((success) => {
-      this.showMessage('Successfully saved a new mushroom point!');
+      this.openSnackBar('Successfully saved a new mushroom point!');
       this.getMushrooms();
     }, error => {
-      this.showMessage('Failed to save the mushroom. Sorry!')
+      this.openSnackBar('Failed to save the mushroom. Sorry!')
     });
   }
 
@@ -91,7 +88,6 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
       .openOn(this.map);
 
     if (!water) {
-      // @ts-ignore
       document.getElementById('addNewBtn').addEventListener('click', (e) => {
         this.add();
       });
@@ -134,20 +130,24 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
 
   private getMushrooms() {
     this.service.getMushroomPoints().subscribe(mushrooms => {
-      for (const mushroom of mushrooms) {
-        const geoJSONPoint = L.geoJSON(mushroom).addTo(this.map);
-        let popupContent = "Here you can find " + mushroom.properties.name;
-        if (mushroom.properties.details?.length) {
-          popupContent += "<br>Details: " + mushroom.properties.details;
-        }
-        geoJSONPoint.bindPopup(popupContent);
-      }
+      this.createGeoJSONPointOnMap(mushrooms);
     }, error => {
-      this.showMessage('Failed to load the mushrooms. Sorry!')
+      this.openSnackBar('Failed to load the mushrooms. Sorry!')
     })
   }
 
-  private showMessage(message: string) {
+  private createGeoJSONPointOnMap(mushrooms: GeoJSON[]) {
+    for (const mushroom of mushrooms) {
+      const geoJSONPoint = L.geoJSON(mushroom).addTo(this.map);
+      let popupContent = "Here you can find " + mushroom.properties.name;
+      if (mushroom.properties.details?.length) {
+        popupContent += "<br>Details: " + mushroom.properties.details;
+      }
+      geoJSONPoint.bindPopup(popupContent);
+    }
+  }
+
+  private openSnackBar(message: string) {
     this.snackBar.open(message, 'OK', {duration: 4000});
   }
 
