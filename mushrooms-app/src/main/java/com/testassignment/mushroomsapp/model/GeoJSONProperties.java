@@ -11,4 +11,6 @@ public class GeoJSONProperties {
 
     private String name;
 
+    private String details;
+
 }
