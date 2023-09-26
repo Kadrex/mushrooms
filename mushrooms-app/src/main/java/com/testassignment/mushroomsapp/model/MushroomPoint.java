@@ -12,7 +12,10 @@ public class MushroomPoint {
     private Long id;
 
     @Column
-    private String type;
+    private String name;
+
+    @Column
+    private String details;
 
     @Column
     private Float lat;
