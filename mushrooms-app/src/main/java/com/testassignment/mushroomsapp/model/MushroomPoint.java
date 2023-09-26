@@ -1,8 +1,6 @@
 package com.testassignment.mushroomsapp.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -10,15 +8,16 @@ import lombok.Data;
 public class MushroomPoint {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
     private String type;
 
     @Column
-    private Float xCoordinates;
+    private Float lat;
 
     @Column
-    private Float yCoordinates;
+    private Float lng;
 
 }

@@ -18,8 +18,8 @@ public class MushroomPointGeoJSONMapper {
         MushroomPoint mushroomPoint = new MushroomPoint();
         mushroomPoint.setId(geoJSON.getProperties().getId());
         mushroomPoint.setType(geoJSON.getProperties().getName());
-        mushroomPoint.setXCoordinates(geoJSON.getGeometry().getCoordinates().get(1));
-        mushroomPoint.setYCoordinates(geoJSON.getGeometry().getCoordinates().get(0));
+        mushroomPoint.setLat(geoJSON.getGeometry().getCoordinates().get(0));
+        mushroomPoint.setLng(geoJSON.getGeometry().getCoordinates().get(1));
         return mushroomPoint;
     }
 
@@ -27,7 +27,7 @@ public class MushroomPointGeoJSONMapper {
         GeoJSON geoJSON = new GeoJSON();
         geoJSON.setType(GEO_JSON_TYPE);
         geoJSON.setProperties(new GeoJSONProperties(mushroomPoint.getId(), mushroomPoint.getType()));
-        geoJSON.setGeometry(new GeoJSONGeometry(GEO_JSON_GEOMETRY_TYPE, Arrays.asList(mushroomPoint.getYCoordinates(), mushroomPoint.getXCoordinates())));
+        geoJSON.setGeometry(new GeoJSONGeometry(GEO_JSON_GEOMETRY_TYPE, Arrays.asList(mushroomPoint.getLng(), mushroomPoint.getLat())));
         return geoJSON;
     }
 
