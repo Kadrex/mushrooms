@@ -1,0 +1,38 @@
+<div>
+  <!-- Title -->
+  <h3>Add a mushroom point with coordinates:<br>
+    {{coordinates.lat}}, {{coordinates.lng}}</h3>
+
+  <!-- Note -->
+  <p class="ps">
+    To add a new mushroom point, please provide the mushroom name.<br>
+    You can also add details about this mushroom point.
+  </p>
+
+  <form [formGroup]="form">
+
+    <!-- Mushroom name -->
+    <div class="mushroomNameContainer">
+      <mat-label>Name:</mat-label><br>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="name">
+        <mat-error *ngIf="hasError('required')">This field is required.</mat-error>
+        <mat-error *ngIf="hasError('maxlength')">Maximum allowed character count is 255.</mat-error>
+        <mat-error *ngIf="hasError('minlength')">Minimum allowed character count is 2.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Mushroom point details -->
+    <div class="mushroomPointDetailsContainer">
+      <mat-label>Details:</mat-label><br>
+        <textarea formControlName="details"></textarea>
+        <!--input matInput formControlName="details"-->
+    </div>
+  </form>
+
+  <!-- Actions -->
+  <mat-dialog-actions>
+    <button mat-raised-button [mat-dialog-close]="form.invalid ? false : form.value" color="primary" [disabled]="form.invalid">Add</button>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</div>

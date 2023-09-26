@@ -1,4 +1,5 @@
 export interface GeoJSONProperties {
-  id: number;
+  id?: number | null;
   name: string;
+  details?: string | null;
 }
