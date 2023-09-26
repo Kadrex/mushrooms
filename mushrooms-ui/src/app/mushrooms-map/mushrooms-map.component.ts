@@ -19,9 +19,10 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
   urlTemplate: string = 'https://tile.openstreetmap.org/level/tileX/tileY.png';
 
   private map: any;
-  private currentLatLng: LatLng | undefined;
+  private currentLatLng: LatLng;
 
   checkWater: boolean = true;
+  private loadingWaterInfo: boolean = false;
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -76,6 +77,8 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
   }
 
   async onMapClick(e:any) {
+    if (this.loadingWaterInfo) return;
+
     this.currentLatLng = e.latlng;
     let water = this.checkWater ? await this.isWater(e.latlng) : false;
 
@@ -98,14 +101,17 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
   private async isWater(latLng: LatLng): Promise<boolean> {
     let water = false;
     this.changeCursorTo('wait');
+    this.loadingWaterInfo = true;
     await this.isItWaterService.isItWater(latLng).toPromise()
       .then(result => {
         water = result?.water ?? false;
         this.changeCursorTo('grab');
+        this.loadingWaterInfo = false;
       }, error => {
         // Just in case my API key expires or something.
         water = false;
         this.changeCursorTo('grab');
+        this.loadingWaterInfo = false;
       });
     return water;
   }
