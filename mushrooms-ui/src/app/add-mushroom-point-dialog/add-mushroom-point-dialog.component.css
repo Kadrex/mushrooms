@@ -1,9 +1,12 @@
-textarea {
+#mushroomPointDetailsInput {
   width: 100%;
   min-height: 30px;
   height: 60px;
   max-height: 270px;
   resize: vertical;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  padding: 6px;
 }
 
 ::ng-deep .mat-form-field-infix {
