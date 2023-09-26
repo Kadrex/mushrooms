@@ -93,7 +93,11 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
     this.service.getMushroomPoints().subscribe(mushrooms => {
       for (const mushroom of mushrooms) {
         const geoJSONPoint = L.geoJSON(mushroom).addTo(this.map);
-        geoJSONPoint.bindPopup("Here you can find " + mushroom.properties.name);
+        let popupContent = "Here you can find " + mushroom.properties.name;
+        if (mushroom.properties.details?.length) {
+          popupContent += "<br>Details: " + mushroom.properties.details;
+        }
+        geoJSONPoint.bindPopup(popupContent);
       }
     }, error => {
       this.showMessage('Failed to load the mushrooms. Sorry!')
