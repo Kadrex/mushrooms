@@ -21,6 +21,8 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
   private map: any;
   private currentLatLng: LatLng | undefined;
 
+  checkWater: boolean = true;
+
   private initMap(): void {
     this.map = L.map('map', {
       center: [58.62, 24.76],
@@ -75,7 +77,7 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
 
   async onMapClick(e:any) {
     this.currentLatLng = e.latlng;
-    let water = await this.isWater(e.latlng);
+    let water = this.checkWater ? await this.isWater(e.latlng) : false;
 
     const popupContent = this.constructPopupContent(water, e.latlng);
 

@@ -12,6 +12,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -20,10 +21,10 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     AddMushroomPointDialogComponent,
 
   ],
-  imports: [
-    BrowserModule, HttpClientModule, MatDialogModule, NoopAnimationsModule, MatInputModule, FormsModule, ReactiveFormsModule,
-    MatFormFieldModule, MatButtonModule, MatSnackBarModule
-  ],
+    imports: [
+        BrowserModule, HttpClientModule, MatDialogModule, NoopAnimationsModule, MatInputModule, FormsModule, ReactiveFormsModule,
+        MatFormFieldModule, MatButtonModule, MatSnackBarModule, MatSlideToggleModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
