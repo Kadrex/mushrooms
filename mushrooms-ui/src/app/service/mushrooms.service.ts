@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {GeoJSON} from "../models/geoJSON";
 import {MushroomDialogResult} from "../models/mushroomDialogResult";
 import {LatLng} from "../models/latLng";
+import {ConfigurationService} from "../configuration/configuration.service";
 
 
 @Injectable({
@@ -11,10 +12,11 @@ import {LatLng} from "../models/latLng";
 })
 export class MushroomsService {
 
-  private baseUrl = 'http://localhost:8080/api/mushroomPoints';
+  private baseUrl = this.configurationService.BASE_URL;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private configurationService: ConfigurationService
   ) {
   }
 
