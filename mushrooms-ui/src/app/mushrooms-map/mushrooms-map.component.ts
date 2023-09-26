@@ -95,13 +95,15 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
 
   private async isWater(latLng: LatLng): Promise<boolean> {
     let water = false;
+    this.changeCursorTo('wait');
     await this.isItWaterService.isItWater(latLng).toPromise()
       .then(result => {
-        console.log(result)
         water = result?.water ?? false;
+        this.changeCursorTo('grab');
       }, error => {
         // Just in case my API key expires or something.
         water = false;
+        this.changeCursorTo('grab');
       });
     return water;
   }
@@ -135,6 +137,10 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
 
   private showMessage(message: string) {
     this.snackBar.open(message, 'OK', {duration: 4000});
+  }
+
+  private changeCursorTo(cursorMode: string): void {
+    document.getElementById('map').style.cursor = cursorMode;
   }
 
 }
