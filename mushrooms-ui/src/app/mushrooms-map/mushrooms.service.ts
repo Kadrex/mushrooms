@@ -35,6 +35,7 @@ export class MushroomsService {
   public getMushroomPoints(): Observable<GeoJSON[]> {
     return this.http.get<GeoJSON[]>(this.baseUrl);
   }
+
   public save(mushroomData: MushroomDialogResult, coordinates: LatLng): Observable<boolean> {
     const geoJSON: GeoJSON = this.constructGeoJSON(mushroomData, coordinates);
     return this.http.post<boolean>(this.baseUrl, geoJSON);

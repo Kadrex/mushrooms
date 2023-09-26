@@ -6,7 +6,8 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AddMushroomPointDialogComponent} from "../add-mushroom-point-dialog/add-mushroom-point-dialog.component";
 import {LatLng} from "../models/latLng";
 import {MushroomDialogResult} from "../models/mushroomDialogResult";
-import {MatSnackBar, MatSnackBarConfig} from "@angular/material/snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {IsItWaterService} from "../service/is-it-water.service";
 
 @Component({
   selector: 'app-mushrooms-map',
@@ -42,6 +43,7 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
 
   constructor(
     private service: MushroomsService,
+    private isItWaterService: IsItWaterService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) { }
@@ -71,18 +73,45 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onMapClick(e:any) {
+  async onMapClick(e:any) {
     this.currentLatLng = e.latlng;
+    let water = await this.isWater(e.latlng);
+
+    const popupContent = this.constructPopupContent(water, e.latlng);
+
     const popup = L.popup();
     popup
       .setLatLng(e.latlng)
-      .setContent("Add a mushroom point here <button id='addNewBtn'>Add</button><br>" + e.latlng.toString())
+      .setContent(popupContent)
       .openOn(this.map);
 
-    // @ts-ignore
-    document.getElementById('addNewBtn').addEventListener('click', (e) => {
-      this.add();
-    });
+    if (!water) {
+      // @ts-ignore
+      document.getElementById('addNewBtn').addEventListener('click', (e) => {
+        this.add();
+      });
+    }
+  }
+
+  private async isWater(latLng: LatLng): Promise<boolean> {
+    let water = false;
+    await this.isItWaterService.isItWater(latLng).toPromise()
+      .then(result => {
+        console.log(result)
+        water = result?.water ?? false;
+      }, error => {
+        // Just in case my API key expires or something.
+        water = false;
+      });
+    return water;
+  }
+
+  private constructPopupContent(water: boolean, latLng: LatLng): string {
+    if (water) {
+      return "This is water.";
+    } else {
+      return "Add a mushroom point here <button id='addNewBtn'>Add</button><br>" + latLng.toString();
+    }
   }
 
   private initClickListeners() {
