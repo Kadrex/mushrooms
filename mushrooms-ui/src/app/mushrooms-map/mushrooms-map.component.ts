@@ -112,9 +112,13 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
 
   private constructPopupContent(water: boolean, latLng: LatLng): string {
     if (water) {
-      return "This is water.";
+      return 'This is water.';
     } else {
-      return "Add a mushroom point here <button id='addNewBtn'>Add</button><br>" + latLng.toString();
+      const firstLine = 'Coordinates:<br>Latitude: ' + latLng.lat + '<br>Longitude: ' + latLng.lng;
+      const secondLine = 'Add a mushroom point here?';
+      const buttonStyles = this.copyMatButtonStyles();
+      const button = "<button style='" + buttonStyles + "' id='addNewBtn'>Add</button>";
+      return firstLine + '<br><br>' + secondLine + '<br><br>' + button;
     }
   }
 
@@ -143,6 +147,18 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
 
   private changeCursorTo(cursorMode: string): void {
     document.getElementById('map').style.cursor = cursorMode;
+  }
+
+  private copyMatButtonStyles() {
+    return 'box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); ' +
+      'background-color: #3f51b5; ' +
+      'color: #fff; ' +
+      'cursor: pointer; ' +
+      'border: none; ' +
+      'min-width: 64px; ' +
+      'line-height: 36px; ' +
+      'padding: 0 16px; ' +
+      'border-radius: 4px;';
   }
 
 }
