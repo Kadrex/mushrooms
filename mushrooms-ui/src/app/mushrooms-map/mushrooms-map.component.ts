@@ -139,7 +139,7 @@ export class MushroomsMapComponent implements OnInit, AfterViewInit {
   private createGeoJSONPointOnMap(mushrooms: GeoJSON[]) {
     for (const mushroom of mushrooms) {
       const geoJSONPoint = L.geoJSON(mushroom).addTo(this.map);
-      let popupContent = "Here you can find " + mushroom.properties.name;
+      let popupContent = "Here you can find <b>" + mushroom.properties.name + "</b>";
       if (mushroom.properties.details?.length) {
         popupContent += "<br>Details: " + mushroom.properties.details;
       }
