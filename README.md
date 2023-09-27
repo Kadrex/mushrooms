@@ -15,6 +15,7 @@
 * Ensure that port 5678 is available.
 * Run ```docker-compose up -d``` in directory root.
 * Wait a little.
+* (The SQL script for creating table is in mushrooms-app/src/main/resources/schema.sql)
 
 ### Backend
 * Ensure that port 8080 is available.
