@@ -14,7 +14,7 @@ export interface IsItWater {
 export class IsItWaterService {
 
   private baseUrl = this.configurationService.WATER_API_URL;
-  private apiKey = '3619120007msh4b93fef447094c8p15a9b0jsn85eb66c5a470';
+  private apiKey = 'bf99949c9dmsh7fbe73d2c037546p161cc0jsn2e466d2c999e';
   private apiHost = 'isitwater-com.p.rapidapi.com';
 
   constructor(
