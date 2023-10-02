@@ -1,7 +1,19 @@
 # Mushrooms
 
-## Running
+## Tech info
+Ports used:
+* 5432 for database
+* 4200 for frontend
+* 8080 for backend
+
+## Running in Docker
 * Clone the repository.
+* Navigate to the root of the project (/mushrooms)
+* Run ```docker-compose build && docker-compose up -d```
+* Wait a little and open http://localhost:4200
+
+
+## Alternatively, run frontend and backend yourself
 
 ### Frontend
 * Ensure that port 4200 is available.
@@ -12,7 +24,7 @@
 
 ### Database
 * Ensure that your Docker is running.
-* Ensure that port 5678 is available.
+* Ensure that port 5432 is available.
 * Run ```docker-compose up -d``` in directory root.
 * Wait a little.
 * (The SQL script for creating table is in mushrooms-app/src/main/resources/schema.sql)
@@ -30,3 +42,4 @@ For database: docker-compose.yml file and application.properties in backend.
 
 #### Side note
 Please don't make too many requests to the water-api, since it will "stop working" when a limit is exceeded.
+Too many would be 90+.

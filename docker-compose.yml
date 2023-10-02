@@ -4,10 +4,34 @@ services:
     container_name: postgres
     image: postgres
     ports:
-      - 5678:5678
+      - 5432:5432
     restart: always
     environment:
       POSTGRES_USER: mushroom-girl
       POSTGRES_PASSWORD: mushr88ming
       POSTGRES_DB: mushrooms
-      PGPORT: 5678
+      PGPORT: 5432
+    networks:
+      - mushrooms-db-network
+  backend:
+    build: ./mushrooms-app
+    container_name: mushrooms-app
+    ports:
+      - 8080:8080
+    networks:
+      - mushrooms-network
+      - mushrooms-db-network
+    depends_on:
+      - postgres
+  frontend:
+    build: ./mushrooms-ui
+    container_name: mushrooms-ui
+    ports:
+      - 4200:4200
+    networks:
+      - mushrooms-network
+networks:
+  mushrooms-network:
+    driver: bridge
+  mushrooms-db-network:
+    driver: bridge
